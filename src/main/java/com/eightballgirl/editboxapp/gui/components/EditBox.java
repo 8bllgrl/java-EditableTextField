@@ -2,11 +2,12 @@ package com.eightballgirl.editboxapp.gui.components;
 
 import com.eightballgirl.editboxapp.constants.TempConstants;
 import com.eightballgirl.editboxapp.gui.GuiComponent;
+import com.eightballgirl.editboxapp.gui.GuiEventListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class EditBox extends GuiComponent implements Widget {
+public class EditBox extends GuiComponent implements GuiEventListener {
     public boolean visible = false;
     private boolean isEditable;
     private boolean focused;
@@ -66,20 +67,29 @@ public class EditBox extends GuiComponent implements Widget {
         return this.isVisible() && this.isFocused() && this.isEditable();
     }
 
+
+    public boolean keyTyped(KeyEvent e){
+        //intention of this method:
+        //make it so that it checks to conditions of if the key pressed is an arrow key.
+        //make it so that this part of the code is what checks if the edit box is editable or not.
+        return false;
+    }
+
+
     public boolean charTyped(KeyEvent e) {
         if (!this.canConsumeInput()) {
             return false;
         }
         if (this.isEditable) {
             if (e.getKeyChar() == KeyEvent.VK_ENTER){
-                System.out.println(stringValue);
+                System.out.println("\""+stringValue+"\"");
                 return true;
             }
             if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
-                System.out.println("Backspace");
                 if (stringValue.length() == 0) {
                     return true;
                 }
+                System.out.println("Backspace");
                 stringValue = stringValue.substring(0, stringValue.length() - 1);
 
             } else {
@@ -105,24 +115,24 @@ public class EditBox extends GuiComponent implements Widget {
         int highlightStart = 0;
         int highlightEnd = stringValue.length();
         //
-        String finalizedText = new StringBuilder(this.stringValue).replace(highlightStart, highlightEnd, string).toString();
+        String finalizedText = new StringBuilder(this.stringValue)
+                .replace(highlightStart, highlightEnd, string).toString();
         this.stringValue = finalizedText;
 
     }
 
-//    public void keyTyped(KeyEvent e) {
-//        System.out.println("This is from edit box.");
-//        if (!this.canConsumeInput()){
-//            System.out.println("cannot consume input at the time being.");
-//            return;
-//        }
-//        if (this.isEditable){
-//
-//        }
-//
-//    }
+    //////////////////////////////////////////////////////////////////////////////
+    ///getters & setters
 
-    ///getter & setter
+
+
+    public String getStringValue() {
+        return stringValue;
+    }
+
+    public void setStringValue(String stringValue) {
+        this.stringValue = stringValue;
+    }
 
     public boolean isVisible() {
         return visible;
